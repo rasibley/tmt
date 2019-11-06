@@ -1,5 +1,10 @@
 - hosts: all
   tasks:
+  - name: Install EPEL
+    dnf:
+      state: present
+      name: epel-release
+    when: ansible_distribution == 'CentOS' or ansible_distribution == 'Red Hat Enterprise Linux'
   - name: Install necessary dependencies
     dnf:
       state: present
