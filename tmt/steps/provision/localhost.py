@@ -23,7 +23,9 @@ class ProvisionLocalhost(ProvisionBase):
         # Playbook paths should be relative to the metadata tree root
         playbook = os.path.join(self.step.plan.run.tree.root, what)
         # Run ansible against localhost, in verbose mode, enable --become
-        self.run(f'ansible-playbook -vb -c local -i localhost, {playbook}')
+        # Force column width to 80 chars, to mitigate issues with too long lines due to our indent
+        # Column width is also the same as with libvirt plugin
+        self.run(f'stty cols 80 && ansible-playbook -vb -c local -i localhost, {playbook}')
 
     def _prepare_shell(self, what):
         """ Run ansible on localhost """
