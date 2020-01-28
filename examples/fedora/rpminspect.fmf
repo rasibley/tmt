@@ -1,0 +1,34 @@
+/local:
+    summary:
+        Generic rpminspect test on localhost
+    provision:
+        how: local
+    prepare:
+        how: shell
+        script: sudo dnf install -y rpminspect
+    execute:
+        how: shell
+        script: rpminspect *.rpm
+
+/container:
+    summary:
+        Generic rpminspect test in a prepared container
+    provision:
+        how: container
+        image: rpminspect-container-name
+    execute:
+        how: shell
+        script: rpminspect -T licence,manpage,disttag *.rpm
+
+/plugin:
+    summary:
+        Generic rpminspect test using a dedicated plugin
+    provision:
+        how: container
+        image: rpminspect-container-name
+    execute:
+        how: rpminspect
+        tests:
+            - license
+            - manpage
+            - disttag
